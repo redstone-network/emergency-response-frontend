@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react'
-import PropTypes from 'prop-types'
 import { Button, Card, Space, Table } from 'antd'
 import * as substrate from '../substrate'
 
-const ProposalList = ({ triggers, actions }: any) => {
+const ProposalList = () => {
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [recipes, setProposals] = useState([])
   const [loading, setLoading] = useState(false)
@@ -33,16 +32,6 @@ const ProposalList = ({ triggers, actions }: any) => {
       },
     ]
     setProposals(data)
-  }
-
-  const createProposal = async (actionId: number, triggerId: number) => {
-    // setLoading(true)
-    // const proposal = await substrate.createProposal(actionId, triggerId)
-
-    // if (proposal) {
-    //   setLoading(false)
-    //   getProposals()
-    // }
   }
 
   const agree = async (id: number) => {
@@ -96,14 +85,6 @@ const ProposalList = ({ triggers, actions }: any) => {
     getProposals()
   }, [])
 
-  const showModal = () => {
-    setIsModalVisible(true)
-  }
-  const handleOk = (values: any) => {
-    createProposal(values.action, values.trigger)
-    setIsModalVisible(false)
-  }
-
   return (
     <>
       <Card title="Proposal List" style={{ width: '80%', margin: '10px auto' }}>
@@ -112,11 +93,6 @@ const ProposalList = ({ triggers, actions }: any) => {
 
     </>
   )
-}
-
-ProposalList.propTypes = {
-  triggers: PropTypes.array.isRequired,
-  actions: PropTypes.array.isRequired,
 }
 
 export default ProposalList

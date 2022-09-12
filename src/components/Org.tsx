@@ -1,10 +1,11 @@
 import { Button, Form, Input } from 'antd'
+import * as substrate from '../substrate'
 
-const Org = ({ visible, triggers, actions, onCreate, onCancel }: any) => {
+const Org = ({ visible, onCreate, onCancel }: any) => {
   const [form] = Form.useForm()
 
-  const onFinish = (values: any) => {
-    console.log(values)
+  const onFinish = async (values: any) => {
+    const org = await substrate.createOrg(values.name)
   }
 
   const onReset = () => {

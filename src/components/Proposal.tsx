@@ -13,6 +13,9 @@ const Proposal = ({ visible, triggers, actions, onCreate, onCancel }: any) => {
 
   return (
 <Form form={form} name="control-hooks" onFinish={onFinish}>
+<Form.Item name="id" label="org id" rules={[{ required: true }]}>
+  <Input placeholder="input org id"/>
+</Form.Item>
 <Form.Item name="detail" label="proposal detail" rules={[{ required: true }]}>
   <Input placeholder="input detail"/>
 </Form.Item>

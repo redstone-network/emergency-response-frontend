@@ -68,7 +68,7 @@ async function getLiquidityPool(
   })
 }
 
-getLiquidityPool('AUSD', 'RENBTC')
+// getLiquidityPool('AUSD', 'RENBTC')
 
 // 查看某个账户的某个币种的余额
 async function getBalance(
@@ -83,7 +83,7 @@ async function getBalance(
   console.log(balance)
 }
 
-getBalance(Alice.address, 'AUSD')
+// getBalance(Alice.address, 'AUSD')
 
 // 使用交易池交换代币
 
@@ -99,7 +99,7 @@ async function swapWithExactSupply(
   return hash
 }
 
-swapWithExactSupply('AUSD', 'RENBTC')
+// swapWithExactSupply('AUSD', 'RENBTC')
 
 // 转账
 async function transfer(
@@ -411,14 +411,14 @@ async function recipeTurnOff(id: number) {
 
 async function getOrgs() {
   const exposures
-    = await api.query.palletDonate.mapOrg.entries()
+    = await api.query.donateModule.mapOrg.entries()
 
   const orgs = []
 
   for (const [key] of exposures) {
-    const id = +key.args[1]
+    const id = +key.args[0]
     const t
-      = await api.query.palletDonate.mapOrg(id)
+      = await api.query.donateModule.mapOrg(id)
     const org = t.toHuman() as object
     orgs.push({
       ...org,
@@ -428,6 +428,143 @@ async function getOrgs() {
   }
 
   return orgs
+}
+
+async function createOrg(
+  name: string,
+  user: any = Bob,
+) {
+  return new Promise((resolve) => {
+    api.tx.donateModule
+      .summon(name, '3')
+      .signAndSend(
+        user,
+        ({ events = [], status }) => {
+          if (status.isFinalized)
+            resolve({ events, status })
+
+          events.forEach(
+            ({
+              phase,
+              event: { data, method, section },
+            }) => {
+              console.log(
+                `${phase.toString()} : ${section}.${method} ${data.toString()}`,
+              )
+            },
+          )
+        },
+      )
+  })
+}
+
+async function donate(
+  orgId: number,
+  amount: number,
+  user: any = Bob,
+) {
+  return new Promise((resolve) => {
+    api.tx.donateModule
+      .donate(orgId, amount)
+      .signAndSend(
+        user,
+        ({ events = [], status }) => {
+          if (status.isFinalized)
+            resolve({ events, status })
+
+          events.forEach(
+            ({
+              phase,
+              event: { data, method, section },
+            }) => {
+              console.log(
+                `${phase.toString()} : ${section}.${method} ${data.toString()}`,
+              )
+            },
+          )
+        },
+      )
+  })
+}
+
+async function createProposal(
+  orgId: number,
+  paymentRequested: number,
+  detail: string,
+  user: any = Bob,
+) {
+  return new Promise((resolve) => {
+    api.tx.donateModule
+      .submitProposal(orgId, paymentRequested, detail)
+      .signAndSend(
+        user,
+        ({ events = [], status }) => {
+          if (status.isFinalized)
+            resolve({ events, status })
+
+          events.forEach(
+            ({
+              phase,
+              event: { data, method, section },
+            }) => {
+              console.log(
+                `${phase.toString()} : ${section}.${method} ${data.toString()}`,
+              )
+            },
+          )
+        },
+      )
+  })
+}
+
+async function submitVote(
+  orgId: number,
+  proposalId: number,
+  user: any = Bob,
+) {
+  return new Promise((resolve) => {
+    api.tx.donateModule
+      .submitVote(orgId, proposalId)
+      .signAndSend(
+        user,
+        ({ events = [], status }) => {
+          if (status.isFinalized)
+            resolve({ events, status })
+
+          events.forEach(
+            ({
+              phase,
+              event: { data, method, section },
+            }) => {
+              console.log(
+                `${phase.toString()} : ${section}.${method} ${data.toString()}`,
+              )
+            },
+          )
+        },
+      )
+  })
+}
+
+async function getProposals() {
+  const exposures
+    = await api.query.donateModule.proposals.entries()
+
+  const proposals = []
+
+  for (const [key] of exposures) {
+    const id = +key.args[0]
+    const t
+      = await api.query.donateModule.proposals(id)
+    const proposal = t.toHuman() as object
+    proposals.push({
+      ...proposal,
+      key: id,
+      id,
+    })
+  }
+
+  return proposals
 }
 
 export {
@@ -443,4 +580,10 @@ export {
   getRecipes,
   recipeTurnOn,
   recipeTurnOff,
+  getOrgs,
+  createOrg,
+  donate,
+  createProposal,
+  submitVote,
+  getProposals,
 }
