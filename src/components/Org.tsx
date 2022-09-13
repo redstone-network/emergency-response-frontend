@@ -13,12 +13,16 @@ const Org = ({ visible, onCreate, onCancel }: any) => {
   }
 
   return (
-<Form form={form} name="control-hooks" onFinish={onFinish}>
+<Form form={form} name="control-hooks"
+      labelCol={{ span: 5 }}
+      wrapperCol={{ span: 16 }}
+      onFinish={onFinish}
+>
 <Form.Item name="name" label="Org name" rules={[{ required: true }]}>
   <Input placeholder="input org name"/>
 </Form.Item>
 
-<Form.Item>
+<Form.Item wrapperCol={{ offset: 5, span: 16 }}>
   <Button type="primary" htmlType="submit">
     Submit
   </Button>

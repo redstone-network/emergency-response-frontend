@@ -9,7 +9,6 @@ const OrgList = ({ org }: any) => {
   const [amount, setAmount] = useState(1)
 
   const onDonate = async () => {
-    console.log('###### the values is', id, amount)
     const org = await substrate.donate(id, amount)
   }
 
@@ -18,9 +17,15 @@ const OrgList = ({ org }: any) => {
   }, [])
 
   return (
-        <Card title={org.name}>memberCount:{org.memberCount}
+        <Card title={org.name} style={{ width: 220 }}>
         <div>
           id:<InputNumber defaultValue={org.id} disabled/>
+        </div>
+        <div>
+          memberCount:{org.memberCount}
+        </div>
+        <div>
+          totalShares:{org.totalShares}
         </div>
         <div>
           donate amout:<InputNumber min="1" value={amount} onChange={v => setAmount(v)}/>

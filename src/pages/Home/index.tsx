@@ -118,9 +118,12 @@ function Home() {
         <Org />
         <Divider />
 
-        <OrgList orgs={orgs} setOrgs={setOrgs} />
+        <div className="center">
+          <div>Org List</div>
+          <div><OrgList orgs={orgs} setOrgs={setOrgs} /></div>
+        </div>
         <Divider />
-        {/* <ProposalList /> */}
+        <ProposalList />
         <Divider />
         <Proposal />
         <Divider />

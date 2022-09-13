@@ -553,14 +553,17 @@ async function getProposals() {
   const proposals = []
 
   for (const [key] of exposures) {
-    const id = +key.args[0]
+    const orgId = +key.args[0]
+    const proposalId = +key.args[1]
+
     const t
-      = await api.query.donateModule.proposals(id)
+      = await api.query.donateModule.proposals(orgId, proposalId)
     const proposal = t.toHuman() as object
     proposals.push({
       ...proposal,
-      key: id,
-      id,
+      key,
+      id: key,
+      proposalId,
     })
   }
 
