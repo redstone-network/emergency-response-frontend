@@ -422,6 +422,7 @@ async function getOrgs() {
     const org = t.toHuman() as object
     orgs.push({
       ...org,
+      available: 0,
       key: id,
       id,
     })
@@ -520,11 +521,12 @@ async function createProposal(
 async function submitVote(
   orgId: number,
   proposalId: number,
+  vote_unit: number,
   user: any = Bob,
 ) {
   return new Promise((resolve) => {
     api.tx.donateModule
-      .submitVote(orgId, proposalId)
+      .submitVote(orgId, proposalId, vote_unit)
       .signAndSend(
         user,
         ({ events = [], status }) => {
