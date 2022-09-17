@@ -497,7 +497,7 @@ async function createProposal(
 ) {
   return new Promise((resolve) => {
     api.tx.donateModule
-      .submitProposal(orgId, paymentRequested, detail)
+      .submitProposal(orgId, paymentRequested/12, detail)
       .signAndSend(
         user,
         ({ events = [], status }) => {
