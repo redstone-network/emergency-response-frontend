@@ -94,6 +94,7 @@ function Home() {
           labelCol={{ span: 5 }}
           wrapperCol={{ span: 24 }}
           layout="inline"
+          className="my-form"
         >
           <Form.Item
             name="name"
@@ -105,6 +106,7 @@ function Home() {
                 message: 'treasury name is required'
               }
             ]}
+            className="form-i"
           >
             <Input
               placeholder="please input treasury name"

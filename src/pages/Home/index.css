@@ -38,6 +38,13 @@
   display: flex;
   justify-content: center;
 }
+.content > .my-form {
+  width: fit-content;
+  margin: 0 auto;
+}
+.form-i .ant-row{
+  flex-flow: unset!important;
+}
 .myBox {
   background: linear-gradient(
     180deg,
