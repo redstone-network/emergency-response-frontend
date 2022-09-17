@@ -420,9 +420,10 @@ async function getOrgs() {
     const t
       = await api.query.donateModule.mapOrg(id)
     const org = t.toHuman() as object
+    let balance = await api.query.balances.account(org.treasuryId);
     orgs.push({
       ...org,
-      available: 0,
+      available: org.totalShares,
       key: id,
       id,
     })
