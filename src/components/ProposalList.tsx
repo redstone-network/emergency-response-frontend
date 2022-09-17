@@ -37,7 +37,9 @@ const ProposalList = () => {
       title: 'Details',
       dataIndex: 'details',
       key: 'details',
-      align: 'center'
+      align: 'center',
+      width: 300,
+      ellipsis: true,
     },
     {
       title: 'Application Funding',
