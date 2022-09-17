@@ -420,10 +420,10 @@ async function getOrgs() {
     const t
       = await api.query.donateModule.mapOrg(id)
     const org = t.toHuman() as object
-    let balance = await api.query.balances.account(org.treasuryId);
+    let balance = await api.query.system.account(org.treasuryId);
     orgs.push({
       ...org,
-      available: org.totalShares,
+      available: balance.data.free.toString(),
       key: id,
       id,
     })
@@ -438,7 +438,7 @@ async function createOrg(
 ) {
   return new Promise((resolve) => {
     api.tx.donateModule
-      .summon(name, '3')
+      .summon(name, '300000000000000')
       .signAndSend(
         user,
         ({ events = [], status }) => {
