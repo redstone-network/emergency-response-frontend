@@ -46,7 +46,7 @@ function Home() {
 
   console.log(extension.allAccounts, extension.extensions)
   const extensions = extension.extensions
-  const allAccounts = extension.allAccounts
+  const allAccounts = extension.allAccounts 
   const [currentExtension, setExtension] = useState('')
   const [currentAccounts, setAccounts] = useState([] as any[])
   const [currentAccount, setAccount] = useState()
@@ -60,10 +60,11 @@ function Home() {
   const [data, setData] = useState([])
   // 顶部form提交
   const onFinish = async (values: any) => {
-    console.log('Success:', values)
-    const { status } = await createOrg(values)
+    const rt = await createOrg(values.name)
     // if (Object.keys(status).includes('status')) {
-    if (Object.keys(status).includes('finalized')) {
+    if (rt.status.isFinalized) {
+      getMyOrgs()
+      console.log('### real Success:', values)
       message.success('create success')
     }
   }
@@ -74,7 +75,7 @@ function Home() {
   }
   //回调 刷下展示列表
   const callBack = () => {
-    console.log('刷新')
+    console.log('#### 刷新')
     getMyOrgs()
   }
   useEffect(() => {
@@ -159,7 +160,7 @@ function Home() {
                     >
                       <Descriptions title="">
                         <Descriptions.Item label="treasury" span={3}>
-                          {item.treasuryId}
+                          {item.name}
                         </Descriptions.Item>
                         <Descriptions.Item label="available" span={3}>
                           {item.available}

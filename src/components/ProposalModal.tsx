@@ -11,11 +11,7 @@ const ProposalModal: FC<{
   const [visible, setVisible] = useState(false)
   const [form] = Form.useForm()
   const onFinish = (values: any) => {
-    createProposal({
-      orgId: id,
-      detail: values.detail,
-      paymentRequested: values.paymentRequested
-    })
+    createProposal(id, values.paymentRequested, values.detail)
     message.success('success')
     setVisible(false)
     // 成功后回调

@@ -12,10 +12,7 @@ const DonateModal: FC<{
   const [visible, setVisible] = useState(false)
   const [form] = Form.useForm()
   const onFinish = async (values: any) => {
-    const data = await donate({
-      donate: id,
-      amount: values.amount
-    })
+    const data = await donate(id, values.amount)
     message.success('success')
     setVisible(false)
     // 成功后回调

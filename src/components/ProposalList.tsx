@@ -14,8 +14,8 @@ const ProposalList = () => {
   }
 
   const agree = async (idOrg: number, proposalId: number, vote_unit: 0 | 1) => {
-    const { status } = await substrate.submitVote(idOrg, proposalId, vote_unit)
-    if (object.keys(status).includes('finalized')) {
+    const rt = await substrate.submitVote(idOrg, proposalId, vote_unit)
+    if (rt.status.isFinalized) {
       getProposals()
     }
   }
