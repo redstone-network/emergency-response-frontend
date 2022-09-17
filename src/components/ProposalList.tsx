@@ -22,13 +22,13 @@ const ProposalList = () => {
 
   const columns = [
     {
-      title: 'Treasury Id',
+      title: 'TreasuryId',
       dataIndex: 'orgId',
       key: 'orgId',
       align: 'center'
     },
     {
-      title: 'Proposal Id',
+      title: 'ProposalId',
       dataIndex: 'proposalId',
       key: 'proposalId',
       align: 'center'
@@ -38,17 +38,17 @@ const ProposalList = () => {
       dataIndex: 'details',
       key: 'details',
       align: 'center',
-      width: 300,
+      width: 180,
       ellipsis: true,
     },
     {
-      title: 'Application Funding',
+      title: 'ApplicationFunding',
       dataIndex: 'paymentRequested',
       key: 'paymentRequested',
       align: 'center'
     },
     {
-      title: 'Payment Frequency',
+      title: 'PaymentFrequency',
       dataIndex: 'paymentFrequency',
       key: 'paymentFrequency',
       align: 'center'
@@ -60,19 +60,19 @@ const ProposalList = () => {
       align: 'center'
     },
     {
-      title: 'Approve votes',
+      title: 'ApproveVotes',
       dataIndex: 'approveVotes',
       key: 'approveVotes',
       align: 'center'
     },
     {
-      title: 'Deny voted',
+      title: 'DenyVoted',
       dataIndex: 'denyVotes',
       key: 'denyVotes',
       align: 'center'
     },
     {
-      title: 'Total votes',
+      title: 'TotalVotes',
       dataIndex: 'votes',
       key: 'votes',
       align: 'center'
@@ -107,7 +107,7 @@ const ProposalList = () => {
   }, [])
 
   return (
-    <Card title="Proposal List" style={{ width: '80%', margin: '10px auto' }}>
+    <Card title="Proposal List" style={{ width: '95%', margin: '10px auto' }}>
       <Table
         loading={loading}
         bordered
