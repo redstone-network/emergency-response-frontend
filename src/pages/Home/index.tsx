@@ -1,92 +1,198 @@
 import {
   Button,
+  Card,
+  Col,
+  Descriptions,
   Divider,
+  Empty,
   Form,
   Input,
   Menu,
+  message,
   Modal,
   Radio,
+  Row,
   Select,
   Space,
   Table,
-  TimePicker,
+  TimePicker
 } from 'antd'
-import { useState } from 'react'
+import './index.css'
+import { useEffect, useState } from 'react'
 import extension from '../../substrate/extension'
 import * as index from '../../substrate/index'
 import Org from '@/components/Org'
 import Proposal from '@/components/Proposal'
-import OrgList from '@/components/OrgList'
-import ProposalList from '@/components/ProposalList'
+import DonateModal from '@/components/DonateModal'
+import ProposalModal from '@/components/ProposalModal'
+import { createOrg, getOrgs } from '../../substrate/index'
 
-async function getChainInfo() {
-  const chainInfo = await index.getChainInfo()
-  console.log(
-    'substrate blockchain connected!!! chain information:',
-    chainInfo,
-  )
-}
-
-getChainInfo()
-
-async function getUser(userName: string) {
-  const user = await index.getUser(userName)
-  console.log('address:', user.address)
-}
-
-getUser('Alice')
-getUser('Bob')
+// import OrgList from "@/components/OrgList";
 
 function Home() {
-  const [orgs, setOrgs] = useState([])
-
-  console.log(
-    extension.allAccounts,
-    extension.extensions,
-  )
-  const extensions = extension.extensions
-  const allAccounts = extension.allAccounts
-
-  const [currentExtension, setExtension]
-    = useState('')
-  const [currentAccounts, setAccounts] = useState(
-    [] as any[],
-  )
-  const [currentAccount, setAccount] = useState()
-  const handleExtensionChange = (
-    value: string,
-  ) => {
-    setExtension(value)
-    const accounts
-      = allAccounts.filter(
-        account => account.meta.source === value,
-      ) || []
-    setAccounts(accounts)
+  const getChainInfo = async () => {
+    const chainInfo = await index.getChainInfo()
+    console.log(
+      'substrate blockchain connected!!! chain information:',
+      chainInfo
+    )
+  }
+  const getUser = async (userName: string) => {
+    const user = await index.getUser(userName)
+    console.log('address:', user.address)
   }
 
+  // const [orgs, setOrgs] = useState([]);
+
+  console.log(extension.allAccounts, extension.extensions)
+  const extensions = extension.extensions
+  const allAccounts = extension.allAccounts
+  const [currentExtension, setExtension] = useState('')
+  const [currentAccounts, setAccounts] = useState([] as any[])
+  const [currentAccount, setAccount] = useState()
+  const handleExtensionChange = (value: string) => {
+    setExtension(value)
+    const accounts =
+      allAccounts.filter((account) => account.meta.source === value) || []
+    setAccounts(accounts)
+  }
+  // 展示模块数据
+  const [data, setData] = useState([])
+  // 顶部form提交
+  const onFinish = async (values: any) => {
+    console.log('Success:', values)
+    const { status } = await createOrg(values)
+    // if (Object.keys(status).includes('status')) {
+    if (Object.keys(status).includes('finalized')) {
+      message.success('create success')
+    }
+  }
+  const [form] = Form.useForm()
+  const getMyOrgs = async () => {
+    const data = await getOrgs()
+    setData(data)
+  }
+  //回调 刷下展示列表
+  const callBack = () => {
+    console.log('刷新')
+    getMyOrgs()
+  }
+  useEffect(() => {
+    getChainInfo()
+    getUser('Alice')
+    getUser('Bob')
+    getMyOrgs()
+  }, [])
   return (
-    <div>
-      <div className="header">
-        <h1>Red Stone Emergency Response System</h1>
+    <div className="myBox">
+      <div className="content">
+        <Form
+          form={form}
+          onFinish={onFinish}
+          name="top"
+          labelCol={{ span: 5 }}
+          wrapperCol={{ span: 24 }}
+          layout="inline"
+        >
+          <Form.Item
+            name="name"
+            label="treasury name"
+            required
+            rules={[
+              {
+                required: true,
+                message: 'treasury name is required'
+              }
+            ]}
+          >
+            <Input
+              placeholder="please input treasury name"
+              style={{ width: '500px' }}
+            ></Input>
+          </Form.Item>
+          <Form.Item>
+            <Button type="primary" htmlType="submit">
+              Submit
+            </Button>
+          </Form.Item>
+        </Form>
+        {data?.length ? (
+          <Space
+            style={{ marginTop: '50px', height: '500px', overflow: 'auto' }}
+            size="large"
+            wrap
+          >
+            <Row wrap>
+              {/* 替换循环数据 */}
+              {data.map((item: any, index: number) => {
+                return (
+                  <Col span={7} key={index} offset={1}>
+                    <Card
+                      style={{ marginBottom: '50px' }}
+                      actions={[
+                        <DonateModal
+                          key="Donate"
+                          callBack={callBack}
+                          id={item.id}
+                          button={
+                            <Button key="Donate" size="large" block>
+                              Donate
+                            </Button>
+                          }
+                        />,
+                        <ProposalModal
+                          key="submit"
+                          callBack={callBack}
+                          id={item.id}
+                          button={
+                            <Button
+                              key="add1"
+                              type="primary"
+                              size="large"
+                              block
+                            >
+                              submit proposal
+                            </Button>
+                          }
+                        />
+                      ]}
+                    >
+                      <Descriptions title="">
+                        <Descriptions.Item label="treasury" span={3}>
+                          {item.treasuryId}
+                        </Descriptions.Item>
+                        <Descriptions.Item label="available" span={3}>
+                          {item.available}
+                        </Descriptions.Item>
+                      </Descriptions>
+                    </Card>
+                  </Col>
+                )
+              })}
+            </Row>
+          </Space>
+        ) : (
+          <Empty description={false} />
+        )}
+      </div>
+
+      {/* <div className="header">
         <div
           style={{
-            position: 'absolute',
-            right: '20px',
+            position: "absolute",
+            right: "20px",
           }}
         >
           <Select
             value={currentExtension}
             style={{
               width: 120,
-              marginRight: '20px',
+              marginRight: "20px",
             }}
             onChange={handleExtensionChange}
           >
-            {extensions.map(extension => (
-              <Select.Option
-                key={extension.name}
-                value={extension.name}
-              >
+            {extensions.map((extension) => (
+              <Select.Option key={extension.name} value={extension.name}>
                 {extension.name}
               </Select.Option>
             ))}
@@ -96,38 +202,32 @@ function Home() {
             value={currentAccount}
             style={{ width: 120 }}
             onChange={(value) => {
-              setAccount(value)
+              setAccount(value);
             }}
           >
-            {currentAccounts.map(account => (
-              <Select.Option
-                key={account.address}
-                value={account.address}
-              >
+            {currentAccounts.map((account) => (
+              <Select.Option key={account.address} value={account.address}>
                 {account.meta.name}
               </Select.Option>
             ))}
           </Select>
         </div>
-      </div>
-      <div></div>
-      <Divider />
-      <Divider />
+      </div> */}
 
-      <div className="content">
+      {/* <div className="content">
         <Org />
         <Divider />
 
         <div className="center">
           <div>Org List</div>
-          <div><OrgList orgs={orgs} setOrgs={setOrgs} /></div>
+          <div>
+            <OrgList orgs={orgs} setOrgs={setOrgs} />
+          </div>
         </div>
-        <Divider />
-        <ProposalList />
         <Divider />
         <Proposal />
         <Divider />
-      </div>
+      </div> */}
     </div>
   )
 }

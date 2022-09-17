@@ -17,28 +17,26 @@ const OrgList = ({ org }: any) => {
   }, [])
 
   return (
-        <Card title={org.name} style={{ width: 220 }}>
-        <div>
-          id:<InputNumber defaultValue={org.id} disabled/>
-        </div>
-        <div>
-          memberCount:{org.memberCount}
-        </div>
-        <div>
-          totalShares:{org.totalShares}
-        </div>
-        <div>
-          donate amout:<InputNumber min="1" value={amount} onChange={v => setAmount(v)}/>
-        </div>
-              <Button type="primary" onClick={onDonate}>
-                donate
-              </Button>
-        </Card>
+    <Card title={org.name} style={{ width: 220 }}>
+      <div>
+        id:
+        <InputNumber defaultValue={org.id} disabled />
+      </div>
+      <div>memberCount:{org.memberCount}</div>
+      <div>totalShares:{org.totalShares}</div>
+      <div>
+        donate amout:
+        <InputNumber min={1} value={amount} onChange={(v) => setAmount(v)} />
+      </div>
+      <Button type="primary" onClick={onDonate}>
+        donate
+      </Button>
+    </Card>
   )
 }
 
 OrgList.propTypes = {
-  org: PropTypes.object,
+  org: PropTypes.object
 }
 
 export default OrgList

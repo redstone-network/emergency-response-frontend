@@ -16,26 +16,26 @@ const OrgList = ({ orgs, setOrgs }: any) => {
 
   return (
     <List
-    grid={{ gutter: 16, column: 4 }}
-    pagination={{
-      onChange: (page) => {
-        console.log(page)
-      },
-      pageSize: 5,
-    }}
-    dataSource={orgs}
-    renderItem={item => (
-      <List.Item>
-        <OrgItem org={item}></OrgItem>
-      </List.Item>
-    )}
-  />
+      grid={{ gutter: 16, column: 4 }}
+      pagination={{
+        onChange: (page) => {
+          console.log(page)
+        },
+        pageSize: 5
+      }}
+      dataSource={orgs}
+      renderItem={(item: any) => (
+        <List.Item>
+          <OrgItem org={item || {}}></OrgItem>
+        </List.Item>
+      )}
+    />
   )
 }
 
 OrgList.propTypes = {
   orgs: PropTypes.array,
-  setOrgs: PropTypes.func,
+  setOrgs: PropTypes.func
 }
 
 export default OrgList
