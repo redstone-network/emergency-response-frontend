@@ -15,9 +15,8 @@ const ProposalList = () => {
 
   const agree = async (idOrg: number, proposalId: number, vote_unit: 0 | 1) => {
     const rt = await substrate.submitVote(idOrg, proposalId, vote_unit)
-    if (rt.status.isFinalized) {
+    if (rt.status.isFinalized)
       getProposals()
-    }
   }
 
   const columns = [
@@ -25,13 +24,13 @@ const ProposalList = () => {
       title: 'TreasuryId',
       dataIndex: 'orgId',
       key: 'orgId',
-      align: 'center'
+      align: 'center',
     },
     {
       title: 'ProposalId',
       dataIndex: 'proposalId',
       key: 'proposalId',
-      align: 'center'
+      align: 'center',
     },
     {
       title: 'Details',
@@ -45,37 +44,37 @@ const ProposalList = () => {
       title: 'ApplicationFunding',
       dataIndex: 'paymentRequested',
       key: 'paymentRequested',
-      align: 'center'
+      align: 'center',
     },
     {
       title: 'PaymentFrequency',
       dataIndex: 'paymentFrequency',
       key: 'paymentFrequency',
-      align: 'center'
+      align: 'center',
     },
     {
       title: 'State',
       dataIndex: 'statue',
       key: 'statue',
-      align: 'center'
+      align: 'center',
     },
     {
       title: 'ApproveVotes',
       dataIndex: 'approveVotes',
       key: 'approveVotes',
-      align: 'center'
+      align: 'center',
     },
     {
       title: 'DenyVoted',
       dataIndex: 'denyVotes',
       key: 'denyVotes',
-      align: 'center'
+      align: 'center',
     },
     {
       title: 'TotalVotes',
       dataIndex: 'votes',
       key: 'votes',
-      align: 'center'
+      align: 'center',
     },
     {
       title: 'Action',
@@ -98,8 +97,8 @@ const ProposalList = () => {
             deny
           </a>
         </Space>
-      )
-    }
+      ),
+    },
   ] as any
 
   useEffect(() => {

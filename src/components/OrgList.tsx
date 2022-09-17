@@ -21,7 +21,7 @@ const OrgList = ({ orgs, setOrgs }: any) => {
         onChange: (page) => {
           console.log(page)
         },
-        pageSize: 5
+        pageSize: 5,
       }}
       dataSource={orgs}
       renderItem={(item: any) => (
@@ -35,7 +35,7 @@ const OrgList = ({ orgs, setOrgs }: any) => {
 
 OrgList.propTypes = {
   orgs: PropTypes.array,
-  setOrgs: PropTypes.func
+  setOrgs: PropTypes.func,
 }
 
 export default OrgList

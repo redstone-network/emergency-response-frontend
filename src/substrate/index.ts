@@ -1,3 +1,6 @@
+import type {
+  SubmittableResult,
+} from '@polkadot/api'
 import {
   ApiPromise,
   WsProvider,
@@ -121,7 +124,7 @@ async function createTrigger(
       .createTriger(data)
       .signAndSend(
         user,
-        ({ events = [], status }) => {
+        ({ events = [], status }: SubmittableResult) => {
           if (status.isFinalized)
             resolve({ events, status })
 
@@ -227,7 +230,7 @@ async function createAction(
       .createAction(data)
       .signAndSend(
         user,
-        ({ events = [], status }) => {
+        ({ events = [], status }: SubmittableResult) => {
           if (status.isFinalized) { resolve({ events, status }) }
           else {
             console.log(
@@ -317,7 +320,7 @@ async function createRecipe(
       .createRecipe(actionId, triggerId)
       .signAndSend(
         Bob,
-        ({ events = [], status }) => {
+        ({ events = [], status }: SubmittableResult) => {
           if (status.isFinalized)
             resolve({ events, status })
 
@@ -365,7 +368,7 @@ async function recipeTurnOn(id: number) {
       .turnOnRecipe(id)
       .signAndSend(
         Alice,
-        ({ events = [], status }) => {
+        ({ events = [], status }: SubmittableResult) => {
           if (status.isFinalized)
             resolve({ events, status })
 
@@ -390,7 +393,7 @@ async function recipeTurnOff(id: number) {
       .turnOffRecipe(id)
       .signAndSend(
         Alice,
-        ({ events = [], status }) => {
+        ({ events = [], status }: SubmittableResult) => {
           if (status.isFinalized)
             resolve({ events, status })
 
@@ -419,8 +422,8 @@ async function getOrgs() {
     const id = +key.args[0]
     const t
       = await api.query.donateModule.mapOrg(id)
-    const org = t.toHuman() as object
-    let balance = await api.query.system.account(org.treasuryId);
+    const org = t.toHuman() as any
+    const balance = (await api.query.system.account(org.treasuryId)) as any
     orgs.push({
       ...org,
       available: balance.data.free.toString(),
@@ -435,13 +438,13 @@ async function getOrgs() {
 async function createOrg(
   name: string,
   user: any = Bob,
-) {
+): Promise<any> {
   return new Promise((resolve) => {
     api.tx.donateModule
       .summon(name, '300000000000000')
       .signAndSend(
         user,
-        ({ events = [], status }) => {
+        ({ events = [], status }: SubmittableResult) => {
           if (status.isFinalized)
             resolve({ events, status })
 
@@ -464,13 +467,13 @@ async function donate(
   orgId: number,
   amount: number,
   user: any = Bob,
-) {
+): Promise<any> {
   return new Promise((resolve) => {
     api.tx.donateModule
       .donate(orgId, amount)
       .signAndSend(
         user,
-        ({ events = [], status }) => {
+        ({ events = [], status }: SubmittableResult) => {
           if (status.isFinalized)
             resolve({ events, status })
 
@@ -494,13 +497,13 @@ async function createProposal(
   paymentRequested: number,
   detail: string,
   user: any = Bob,
-) {
+): Promise<any> {
   return new Promise((resolve) => {
     api.tx.donateModule
-      .submitProposal(orgId, paymentRequested/12, detail)
+      .submitProposal(orgId, paymentRequested / 12, detail)
       .signAndSend(
         user,
-        ({ events = [], status }) => {
+        ({ events = [], status }: SubmittableResult) => {
           if (status.isFinalized)
             resolve({ events, status })
 
@@ -524,13 +527,13 @@ async function submitVote(
   proposalId: number,
   vote_unit: number,
   user: any = Bob,
-) {
+): Promise<any> {
   return new Promise((resolve) => {
     api.tx.donateModule
       .submitVote(orgId, proposalId, vote_unit)
       .signAndSend(
         user,
-        ({ events = [], status }) => {
+        ({ events = [], status }: SubmittableResult) => {
           if (status.isFinalized)
             resolve({ events, status })
 

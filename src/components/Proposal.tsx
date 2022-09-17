@@ -9,7 +9,7 @@ const Proposal = ({ visible, triggers, actions, onCreate, onCancel }: any) => {
     const org = await substrate.createProposal(
       values.id,
       values.amount,
-      values.detail
+      values.detail,
     )
   }
 

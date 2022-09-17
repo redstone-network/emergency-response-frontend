@@ -1,6 +1,7 @@
-import { Button, Form, Input, InputNumber, message, Modal } from 'antd'
-import React, { useState, FC } from 'react'
-import { createProposal } from '@/substrate'
+import { Button, Form, Input, InputNumber, Modal, message } from 'antd'
+import type { FC } from 'react'
+import React, { useState } from 'react'
+import { createProposal } from '../substrate'
 
 const ProposalModal: FC<{
   button: React.ReactNode
@@ -38,7 +39,7 @@ const ProposalModal: FC<{
             htmlType="submit"
           >
             submit
-          </Button>
+          </Button>,
         ]}
       >
         <Form form={form} name="a" labelCol={{ span: 8 }} onFinish={onFinish}>
@@ -49,8 +50,8 @@ const ProposalModal: FC<{
             rules={[
               {
                 required: true,
-                message: 'proposal detail is required'
-              }
+                message: 'proposal detail is required',
+              },
             ]}
           >
             <Input
@@ -65,8 +66,8 @@ const ProposalModal: FC<{
             rules={[
               {
                 required: true,
-                message: 'requested amout is required'
-              }
+                message: 'requested amout is required',
+              },
             ]}
           >
             <InputNumber

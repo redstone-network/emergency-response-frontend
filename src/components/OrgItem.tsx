@@ -26,7 +26,7 @@ const OrgList = ({ org }: any) => {
       <div>totalShares:{org.totalShares}</div>
       <div>
         donate amout:
-        <InputNumber min={1} value={amount} onChange={(v) => setAmount(v)} />
+        <InputNumber min={1} value={amount} onChange={v => setAmount(v)} />
       </div>
       <Button type="primary" onClick={onDonate}>
         donate
@@ -36,7 +36,7 @@ const OrgList = ({ org }: any) => {
 }
 
 OrgList.propTypes = {
-  org: PropTypes.object
+  org: PropTypes.object,
 }
 
 export default OrgList

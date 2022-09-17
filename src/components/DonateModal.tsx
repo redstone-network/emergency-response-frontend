@@ -1,7 +1,7 @@
 import { Button, Form, InputNumber, Modal, message } from 'antd'
 import type { FC } from 'react'
 import React, { useState } from 'react'
-import { donate } from '@/substrate'
+import * as substrate from '../substrate'
 
 const DonateModal: FC<{
   button: React.ReactNode
@@ -12,7 +12,7 @@ const DonateModal: FC<{
   const [visible, setVisible] = useState(false)
   const [form] = Form.useForm()
   const onFinish = async (values: any) => {
-    const data = await donate(id, values.amount)
+    const data = await substrate.donate(id, values.amount)
     message.success('success')
     setVisible(false)
     // 成功后回调
@@ -39,7 +39,7 @@ const DonateModal: FC<{
             htmlType="submit"
           >
             submit
-          </Button>
+          </Button>,
         ]}
       >
         <Form form={form} name="a" labelCol={{ span: 8 }} onFinish={onFinish}>
@@ -50,8 +50,8 @@ const DonateModal: FC<{
             rules={[
               {
                 required: true,
-                message: 'doante amout is required'
-              }
+                message: 'doante amout is required',
+              },
             ]}
           >
             <InputNumber

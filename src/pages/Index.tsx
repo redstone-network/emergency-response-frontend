@@ -1,5 +1,6 @@
 import { Tabs } from 'antd'
-import React, { FC } from 'React'
+import type { FC } from 'react'
+import React from 'react'
 import Home from './Home'
 import Proposle from './Proposle/Index'
 const Index: FC = () => {

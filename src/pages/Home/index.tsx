@@ -8,24 +8,24 @@ import {
   Form,
   Input,
   Menu,
-  message,
   Modal,
   Radio,
   Row,
   Select,
   Space,
   Table,
-  TimePicker
+  TimePicker,
+  message,
 } from 'antd'
 import './index.css'
 import { useEffect, useState } from 'react'
 import extension from '../../substrate/extension'
 import * as index from '../../substrate/index'
-import Org from '@/components/Org'
-import Proposal from '@/components/Proposal'
-import DonateModal from '@/components/DonateModal'
-import ProposalModal from '@/components/ProposalModal'
 import { createOrg, getOrgs } from '../../substrate/index'
+import Org from '../../components/Org'
+import Proposal from '../../components/Proposal'
+import DonateModal from '../../components/DonateModal'
+import ProposalModal from '../../components/ProposalModal'
 
 // import OrgList from "@/components/OrgList";
 
@@ -34,7 +34,7 @@ function Home() {
     const chainInfo = await index.getChainInfo()
     console.log(
       'substrate blockchain connected!!! chain information:',
-      chainInfo
+      chainInfo,
     )
   }
   const getUser = async (userName: string) => {
@@ -46,18 +46,23 @@ function Home() {
 
   console.log(extension.allAccounts, extension.extensions)
   const extensions = extension.extensions
-  const allAccounts = extension.allAccounts 
+  const allAccounts = extension.allAccounts
   const [currentExtension, setExtension] = useState('')
   const [currentAccounts, setAccounts] = useState([] as any[])
   const [currentAccount, setAccount] = useState()
   const handleExtensionChange = (value: string) => {
     setExtension(value)
-    const accounts =
-      allAccounts.filter((account) => account.meta.source === value) || []
+    const accounts
+      = allAccounts.filter(account => account.meta.source === value) || []
     setAccounts(accounts)
   }
   // 展示模块数据
-  const [data, setData] = useState([])
+  const [data, setData] = useState<any>([])
+  const getMyOrgs = async () => {
+    const data = await getOrgs()
+    setData(data)
+  }
+
   // 顶部form提交
   const onFinish = async (values: any) => {
     const rt = await createOrg(values.name)
@@ -69,11 +74,8 @@ function Home() {
     }
   }
   const [form] = Form.useForm()
-  const getMyOrgs = async () => {
-    const data = await getOrgs()
-    setData(data)
-  }
-  //回调 刷下展示列表
+
+  // 回调 刷下展示列表
   const callBack = () => {
     console.log('#### 刷新')
     getMyOrgs()
@@ -103,8 +105,8 @@ function Home() {
             rules={[
               {
                 required: true,
-                message: 'treasury name is required'
-              }
+                message: 'treasury name is required',
+              },
             ]}
             className="form-i"
           >
@@ -119,7 +121,9 @@ function Home() {
             </Button>
           </Form.Item>
         </Form>
-        {data?.length ? (
+        {
+        data.length
+          ? (
           <Space
             style={{ marginTop: '50px', height: '500px', overflow: 'auto' }}
             size="large"
@@ -157,7 +161,7 @@ function Home() {
                               submit proposal
                             </Button>
                           }
-                        />
+                        />,
                       ]}
                     >
                       <Descriptions title="">
@@ -174,9 +178,11 @@ function Home() {
               })}
             </Row>
           </Space>
-        ) : (
+            )
+          : (
           <Empty description={false} />
-        )}
+            )
+      }
       </div>
 
       {/* <div className="header">

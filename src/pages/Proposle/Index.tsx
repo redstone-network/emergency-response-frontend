@@ -1,5 +1,6 @@
-import React, { FC, useState } from 'react'
-import ProposalList from '@/components/ProposalList'
+import type { FC } from 'react'
+import React, { useState } from 'react'
+import ProposalList from '../../components/ProposalList'
 
 const Proposle: FC = () => {
   const [orgs, setOrgs] = useState([])
